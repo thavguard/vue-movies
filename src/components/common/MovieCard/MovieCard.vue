@@ -49,7 +49,7 @@ const props = defineProps({
   }
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
 
     .more-info {
       opacity: 1;
@@ -57,7 +57,6 @@ const props = defineProps({
   }
 
   .more-info {
-    display: block;
     position: absolute;
     top: 0;
     left: 0;
@@ -99,6 +98,7 @@ const props = defineProps({
       .kino_hd_btn,
       .imdb_btn {
         transition: all 0.2s ease-in-out;
+        width: 32px;
         &:hover {
           opacity: 0.7;
         }
@@ -107,7 +107,6 @@ const props = defineProps({
       .kino_hd_btn {
         img {
           object-fit: contain;
-          width: 42px;
 
           border-radius: 8px;
         }
@@ -119,8 +118,6 @@ const props = defineProps({
           display: flex;
           align-items: center;
           fill: #fff;
-
-          width: 42px;
         }
       }
     }

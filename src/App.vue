@@ -9,6 +9,7 @@
 <style lang="scss">
 @import "@/styles";
 @import url("https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap');
 
 *,
 ::after,

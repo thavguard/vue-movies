@@ -53,18 +53,18 @@ const prevSlice = () => {
           :quality="slide.quality"
         />
       </Slide>
-      <template #addons>
+      <!-- <template #addons>
         <Navigation />
-      </template>
+      </template> -->
     </Carousel>
-    <!-- <div class="carousel-navigation">
+    <div class="carousel-navigation">
       <div class="next" @click="nextSlice">
         <Icon :name="'arrow'" />
       </div>
       <div class="prev" @click="prevSlice">
         <Icon :name="'arrow'" />
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 

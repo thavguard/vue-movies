@@ -8,6 +8,7 @@
 
 <style lang="scss">
 @import "@/styles";
+@import url("https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap");
 
 *,
 ::after,
@@ -29,6 +30,15 @@ a {
   color: inherit;
   font-size: inherit;
   text-decoration: none;
+}
+
+img {
+  display: block;
+
+  max-width: 100%;
+  width: 100%;
+
+  object-fit: cover;
 }
 
 .app {

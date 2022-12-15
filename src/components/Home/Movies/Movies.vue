@@ -4,13 +4,14 @@ import MovieCard from "@/components/common/MovieCard/MovieCard.vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { reactive, ref } from "vue";
-import type { IMovie } from "../types";
 import arrow from "@/assets/icons/arrow.svg";
 import Icon from "@/components/common/Icon/Icon.vue";
+import type { IMovieCard } from "@/types/types";
+import MovieCardSkeleton from "@/components/common/MovieCard/MovieCardSkeleton.vue";
 
 const props = defineProps({
   movies: {
-    type: Array<IMovie>,
+    type: Array<IMovieCard>,
     required: true,
   },
 });
@@ -46,12 +47,20 @@ const prevSlice = () => {
       ref="myCarousel"
       v-model="state.currentSlide"
     >
-      <Slide v-for="slide in props.movies" :key="slide.id">
+      <Slide
+        v-if="props.movies.length"
+        v-for="movie in props.movies"
+        :key="movie.id"
+      >
         <MovieCard
-          :img="slide.img"
-          :rate="slide.rate"
-          :quality="slide.quality"
+          :img="movie.img"
+          :rate="movie.rate"
+          :quality="movie.quality"
+          :iframe="movie.iframe"
         />
+      </Slide>
+      <Slide v-else v-for="slide in 12" :key="slide">
+        <MovieCardSkeleton />
       </Slide>
       <!-- <template #addons>
         <Navigation />

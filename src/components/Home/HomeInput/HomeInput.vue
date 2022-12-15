@@ -122,18 +122,20 @@ const results = [
 
 .results {
   background: $homeInputBg;
-  border-radius: 0 0 8px 8px;
+  border-radius: 8px;
 
   margin-top: 4px;
 
   color: #0e0d0d;
 
   .items {
-    padding: 16px;
+    padding: 16px 0;
   }
 
   &__item {
     display: flex;
+
+    padding: 0 16px;
 
     transition: background 0.1s ease-out;
 

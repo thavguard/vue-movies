@@ -1,4 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useMoviesStore } from "@/store/store";
+const moviesStore = useMoviesStore();
+
+onMounted(async () => {
+  moviesStore.fetchMovies();
+});
+</script>
 
 <template>
   <div class="app">
@@ -9,7 +17,8 @@
 <style lang="scss">
 @import "@/styles";
 @import url("https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 
 *,
 ::after,
@@ -25,6 +34,10 @@ body {
   font-size: 14px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
 a {

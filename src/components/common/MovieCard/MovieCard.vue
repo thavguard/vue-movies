@@ -6,14 +6,20 @@ const props = defineProps({
   img: String,
   rate: Number,
   quality: String,
+  iframe: String,
 });
+const onClick = () => {
+  if (props.iframe) {
+    window.open(props.iframe);
+  }
+};
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click="onClick">
     <div class="info">
-      <div class="rate">{{ props.rate }}</div>
-      <div class="quality">{{ props.quality }}</div>
+      <div class="rate" v-if="props.rate">{{ props.rate }}</div>
+      <div class="quality" v-if="props.quality">{{ props.quality }}</div>
     </div>
     <div class="img">
       <img :src="props.img" alt="movie" />

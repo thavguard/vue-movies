@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { useMoviesStore } from "@/store/store";
+import { useMoviesStore } from "./store/useMoviesStore";
 const moviesStore = useMoviesStore();
 
 onMounted(async () => {

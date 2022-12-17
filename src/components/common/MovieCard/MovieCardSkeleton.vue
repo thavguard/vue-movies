@@ -12,7 +12,7 @@
   width: $cardWidth;
   height: $cardHeight;
 
-  background: #2e2e2e;
+  background: $cardSkeletonBg;
   border-radius: 8px;
   overflow: hidden;
 

@@ -2,7 +2,7 @@
 import Icon from "@/components/common/Icon/Icon.vue";
 import HomeInput from "@/components/Home/HomeInput/HomeInput.vue";
 import Movies from "@/components/Home/Movies/Movies.vue";
-import { useMoviesStore } from "@/store/store";
+import { useMoviesStore } from "@/store/useMoviesStore";
 import HomeMovies from "@/views/HomeView/HomeMovies.vue";
 
 const store = useMoviesStore();

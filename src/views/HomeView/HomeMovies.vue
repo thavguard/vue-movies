@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MoviesBox from "@/components/Home/Movies/MoviesBox.vue";
-import { useMoviesStore } from "@/store/store";
+import { useMoviesStore } from "@/store/useMoviesStore";
 
 const store = useMoviesStore();
 </script>
@@ -23,8 +23,6 @@ const store = useMoviesStore();
 .container {
   .box {
     margin-bottom: 40px;
-    &:not(:last-of-type) {
-    }
   }
 }
 </style>

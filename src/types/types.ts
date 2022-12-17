@@ -1,14 +1,15 @@
 export interface IMovieCard {
-  img: string;
+  year: string;
   rate: number;
   quality?: string;
   id: number;
   iframe: string;
+  kp_id: null | string;
 }
 
 export interface IVideoCDN {
   result: boolean;
-  data: IVideoCDNDate[];
+  data: IVideoCDNData[];
   current_page: number;
   first_page_url: string;
   from: number;
@@ -22,20 +23,20 @@ export interface IVideoCDN {
   total: number;
 }
 
-export interface IVideoCDNDate {
+export interface IVideoCDNData {
   id: number;
   title: string;
   kp_id: null | string;
   imdb_id: null | string;
   world_art_id: null | string;
   type: IMediaType;
-  add: Date;
+  add: string;
   orig_title: string;
-  year: Date;
+  year: string;
   translations: string[];
   quality?: string;
   translation?: string;
-  update: Date;
+  update: string;
   iframe_src: string;
   seasons_count?: number;
   episodes_count?: number;

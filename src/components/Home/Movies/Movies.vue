@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { reactive, ref } from "vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+
 import HomeInput from "@/components/Home/HomeInput/HomeInput.vue";
 import MovieCard from "@/components/common/MovieCard/MovieCard.vue";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import "vue3-carousel/dist/carousel.css";
-import { reactive, ref } from "vue";
 import arrow from "@/assets/icons/arrow.svg";
 import Icon from "@/components/common/Icon/Icon.vue";
 import type { IMovieCard } from "@/types/types";
@@ -16,64 +17,32 @@ const props = defineProps({
   },
 });
 
-const state = reactive({
-  settings: {
-    itemsToShow: 5,
-    snapAlign: "center",
-  },
-  currentSlide: 1,
-});
+const state = reactive({});
 
-const myCarousel = ref<any>(null);
+const onSwiper = () => {};
 
-console.log(myCarousel);
-
-const nextSlice = () => {
-  if (state.currentSlide + 4 < props.movies.length) {
-    state.currentSlide = state.currentSlide + 4;
-  }
-};
-const prevSlice = () => {
-  if (state.currentSlide >= 4) {
-    state.currentSlide = state.currentSlide - 4;
-  }
-};
+const onSlideChange = () => {};
 </script>
 
 <template>
   <div class="movies">
-    <Carousel
-      :settings="state.settings"
-      ref="myCarousel"
-      v-model="state.currentSlide"
+    <swiper
+      :slides-per-view="5"
+      :space-between="8"
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
     >
-      <Slide
+      <swiper-slide
         v-if="props.movies.length"
         v-for="movie in props.movies"
         :key="movie.id"
       >
-        <MovieCard
-          :img="movie.img"
-          :rate="movie.rate"
-          :quality="movie.quality"
-          :iframe="movie.iframe"
-        />
-      </Slide>
-      <Slide v-else v-for="slide in 12" :key="slide">
+        <MovieCard v-bind:="movie" />
+      </swiper-slide>
+      <swiper-slide v-else v-for="slide in 12" :key="slide">
         <MovieCardSkeleton />
-      </Slide>
-      <!-- <template #addons>
-        <Navigation />
-      </template> -->
-    </Carousel>
-    <div class="carousel-navigation">
-      <div class="next" @click="nextSlice">
-        <Icon :name="'arrow'" />
-      </div>
-      <div class="prev" @click="prevSlice">
-        <Icon :name="'arrow'" />
-      </div>
-    </div>
+      </swiper-slide>
+    </swiper>
   </div>
 </template>
 
@@ -110,6 +79,8 @@ const prevSlice = () => {
 <style scoped lang="scss">
 .movies {
   position: relative;
+
+  margin: 0 -60px;
 }
 .carousel-navigation {
   .next,

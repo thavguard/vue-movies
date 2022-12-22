@@ -7,14 +7,8 @@ const store = useMoviesStore();
 
 <template>
   <div class="container">
-    <div class="box">
-      <MoviesBox :movies="store.movies" :title="'Horror'" />
-    </div>
-    <div class="box">
-      <MoviesBox :movies="store.movies" :title="'Horror'" />
-    </div>
-    <div class="box">
-      <MoviesBox :movies="store.movies" :title="'Horror'" />
+    <div class="box" v-for="item in store.genres">
+      <MoviesBox :genreId="item.id" :title="item.genre" />
     </div>
   </div>
 </template>

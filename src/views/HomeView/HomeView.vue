@@ -3,16 +3,22 @@ import Icon from "@/components/common/Icon/Icon.vue";
 import HomeInput from "@/components/Home/HomeInput/HomeInput.vue";
 import Movies from "@/components/Home/Movies/Movies.vue";
 import { useMoviesStore } from "@/store/useMoviesStore";
+import type { IMovieCard } from "@/types/types";
 import HomeMovies from "@/views/HomeView/HomeMovies.vue";
+import { reactive } from "vue";
 
 const store = useMoviesStore();
+
+const state = reactive({
+  recentFilms: [] as IMovieCard[],
+});
 </script>
 
 <template>
   <div class="container">
     <div class="home">
       <div class="cards">
-        <Movies :movies="store.movies" />
+        <Movies :movies="store.recentFilms" />
       </div>
       <div class="input">
         <HomeInput />

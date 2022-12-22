@@ -2,87 +2,90 @@
 import Icon from "../Icon/Icon.vue";
 import kinoHdIcon from "@/assets/icons/kino_hd.webp";
 import { onMounted } from "vue";
-import { kpApi } from "@/API/api";
-import type { IKp, Rating, ExternalID } from "@/types/kpTypes";
+import { kpApi, videoApi } from "@/API/api";
 import { reactive } from "vue";
+import type { Genre } from "@/types/kpTypes";
+import type { IVideoCDN } from "@/types/types";
+import { useMoviesStore } from "@/store/useMoviesStore";
 
 const props = defineProps<{
-  year: string;
-  rate: number;
-  quality?: string;
-  id: number;
-  iframe: string;
-  kp_id: null | string;
+  year: number;
+  ratingKinopoisk: number;
+  kinopoiskId: number;
+  posterUrl: string;
+  nameRu: string;
+  nameEn: string;
+  genres: Genre[];
+  ratingImdb: number;
+  imdbId: string;
 }>();
 
-const store = reactive<{
-  img: string;
-  names: { name: string }[];
-  rating: Rating;
-  genre: string;
-  imdb_rate: number;
-  externalId: ExternalID;
-}>({
-  img: "",
-  names: [],
-  rating: {} as Rating,
-  genre: "",
-  imdb_rate: 0,
-  externalId: {} as ExternalID,
+const store = useMoviesStore();
+
+const state = reactive({
+  quality: "",
+  iframe: "",
 });
 
 const onClick = () => {
-  if (props.iframe) {
-    window.open(props.iframe);
+  if (state.iframe) {
+    window.open(state.iframe);
   }
+
+  store.recentFilms.push(props.kinopoiskId);
 };
 
-onMounted(async () => {
-  const { data } = await kpApi.get<IKp>("movie", {
+const fetchInfo = async () => {
+  const { data } = await videoApi.get<IVideoCDN>("short", {
     params: {
-      search: props.kp_id,
-      field: "id",
+      kinopoisk_id: props.kinopoiskId,
     },
   });
 
-  store.img = data.logo.url;
-  store.names = data.names;
-  store.rating = data.rating;
-  store.genre = data.genres[0].name;
-  store.imdb_rate = data.rating.imdb;
-  store.externalId = data.externalId;
+  state.iframe = data.data[0]?.iframe_src;
+  state.quality = data.data[0]?.quality;
+};
+
+onMounted(() => {
+  fetchInfo();
 });
 </script>
 
 <template>
-  <div class="card" @click="onClick">
+  <div
+    class="card"
+    @click="onClick"
+    :class="{
+      'has-iframe': !!state.iframe,
+    }"
+  >
     <div class="info">
       <div
         class="rate"
         :class="{
-          'rate-0': +store.rating?.kp <= 4,
-          'rate-1': +store.rating?.kp > 4,
-          'rate-2': store.rating?.kp > 7,
+          'rate-0': +props.ratingKinopoisk <= 4,
+          'rate-1': +props.ratingKinopoisk > 4,
+          'rate-2': props.ratingKinopoisk > 7,
         }"
-        v-if="store.rating?.kp"
+        v-if="props.ratingKinopoisk"
       >
-        {{ store.rating?.kp?.toFixed(1) }}
+        {{ props.ratingKinopoisk?.toFixed(1) }}
       </div>
-      <div class="quality" v-if="props.quality">
-        {{ props.quality }}
+      <div class="quality" v-if="state.quality">
+        {{ state.quality }}
       </div>
     </div>
     <div class="img">
-      <img v-if="store.img" :src="store.img" :alt="store.names[0]?.name" />
-      <div v-else class="no-img">{{ store.names[0]?.name }}</div>
+      <img v-if="props.posterUrl" :src="props.posterUrl" :alt="props?.nameRu" />
+      <div v-else class="no-img">{{ props.nameRu }}</div>
     </div>
     <div class="more-info">
-      <div class="more-info__char"><span>жанр:</span> {{ store.genre }}</div>
       <div class="more-info__char">
-        <span>год:</span> {{ props.year.slice(0, 4) }}
+        <span>жанр:</span> {{ props.genres[0]?.genre }}
       </div>
+      <div class="more-info__char"><span>год:</span> {{ props.year }}</div>
       <div class="more-info__char">
-        <span>IMDB:</span> {{ store.imdb_rate }}
+        <span>IMDB:</span> {{ props.ratingImdb }}
       </div>
       <div class="btns">
         <div class="kino_hd_btn">
@@ -98,12 +101,16 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 @import "@/styles";
+.has-iframe {
+  cursor: pointer;
+}
+
 .card {
   position: relative;
   max-width: $cardWidth;
   width: 100%;
 
-  cursor: pointer;
+  margin: 0 60px;
 
   transition: transform 0.25s ease-in-out;
 
@@ -113,8 +120,6 @@ onMounted(async () => {
 
   &:hover {
     transform: scale(1.1);
-    .img {
-    }
 
     .more-info {
       opacity: 1;

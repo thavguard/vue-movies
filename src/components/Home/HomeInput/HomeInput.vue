@@ -3,19 +3,33 @@ import { reactive } from "vue";
 import search from "@/assets/icons/search.svg";
 import { useSearchStore } from "@/store/useSearchStore";
 import MovieCardResult from "../MovieCardResult/MovieCardResult.vue";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useSearchStore();
+const router = useRouter();
+const route = useRoute();
 
-const onSearch = () => {
+const onInput = () => {
   if (store.search) {
     store.fetchResult();
   }
+};
+
+const onSearch = () => {
+  router.push({
+    path: "/search",
+    query: {
+      text: store.search,
+    },
+  });
+
+  console.log("hey hey hey");
 };
 </script>
 
 <template>
   <div class="container">
-    <div class="home-input" @input="onSearch">
+    <div class="home-input" @input="onInput">
       <input
         type="text"
         v-model="store.search"
@@ -27,11 +41,13 @@ const onSearch = () => {
     </div>
     <div class="results" v-if="store.results.length">
       <div class="items">
-        <MovieCardResult v-for="item in store.results" :="item" />
+        <MovieCardResult
+          v-for="item in store.results.slice(0, 4)"
+          :="item"
+          :key="item.id"
+        />
       </div>
-      <div class="show-more" v-if="store.results.length === 4">
-        Показать все
-      </div>
+      <div class="show-more" v-if="store.results.length > 4">Показать все</div>
     </div>
   </div>
 </template>
@@ -99,8 +115,6 @@ const onSearch = () => {
   .items {
     padding: 16px 0;
   }
-
- 
 
   .show-more {
     background: #dadada;

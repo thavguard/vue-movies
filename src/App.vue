@@ -2,10 +2,6 @@
 import { onMounted } from "vue";
 import { useMoviesStore } from "./store/useMoviesStore";
 const moviesStore = useMoviesStore();
-
-onMounted(async () => {
-  moviesStore.fetchMovies();
-});
 </script>
 
 <template>

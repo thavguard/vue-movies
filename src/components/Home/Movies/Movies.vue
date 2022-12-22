@@ -10,12 +10,9 @@ import Icon from "@/components/common/Icon/Icon.vue";
 import type { IMovieCard } from "@/types/types";
 import MovieCardSkeleton from "@/components/common/MovieCard/MovieCardSkeleton.vue";
 
-const props = defineProps({
-  movies: {
-    type: Array<IMovieCard>,
-    required: true,
-  },
-});
+const props = defineProps<{
+  movies: IMovieCard[];
+}>();
 
 const state = reactive({});
 
@@ -33,9 +30,9 @@ const onSlideChange = () => {};
       @slideChange="onSlideChange"
     >
       <swiper-slide
-        v-if="props.movies.length"
+        v-if="props.movies?.length"
         v-for="movie in props.movies"
-        :key="movie.id"
+        :key="movie.kinopoiskId"
       >
         <MovieCard v-bind:="movie" />
       </swiper-slide>

@@ -1,10 +1,15 @@
+import type { Genre } from "./kpTypes";
+
 export interface IMovieCard {
-  year: string;
-  rate: number;
-  quality?: string;
-  id: number;
-  iframe: string;
-  kp_id: null | string;
+  year: number;
+  ratingKinopoisk: number;
+  kinopoiskId: number;
+  posterUrl: string;
+  nameRu: string;
+  nameEn: string;
+  genres: Genre[];
+  ratingImdb: number;
+  imdbId: string;
 }
 
 export interface IVideoCDN {
@@ -18,7 +23,7 @@ export interface IVideoCDN {
   next_page_url: string;
   path: string;
   per_page: number;
-  prev_page_url: null;
+  prev_page_url: string;
   to: number;
   total: number;
 }
@@ -26,21 +31,21 @@ export interface IVideoCDN {
 export interface IVideoCDNData {
   id: number;
   title: string;
-  kp_id: null | string;
-  imdb_id: null | string;
-  world_art_id: null | string;
+  kp_id: string;
+  imdb_id: string;
+  world_art_id: string;
   type: IMediaType;
   add: string;
   orig_title: string;
   year: string;
   translations: string[];
-  quality?: string;
-  translation?: string;
+  quality: string;
+  translation: string;
   update: string;
   iframe_src: string;
-  seasons_count?: number;
-  episodes_count?: number;
-  episodes?: number;
+  seasons_count: number;
+  episodes_count: number;
+  episodes: number;
 }
 
 export enum IMediaType {

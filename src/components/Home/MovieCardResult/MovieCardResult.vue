@@ -1,48 +1,66 @@
 <script setup lang="ts">
-import { kpApi } from "@/API/api";
-import type { IKp } from "@/types/kpTypes";
-import { onMounted, reactive } from "vue";
+import { kpApi, videoApi } from "@/API/api";
+import type { IVideoCDN } from "@/types/types";
+import {
+  onMounted,
+  reactive,
+  onUnmounted,
+  watch,
+  ref,
+  onBeforeMount,
+} from "vue";
 
 const props = defineProps<{
   title: string;
   originalName: string;
   img: string;
-  rate: number;
-  iframe: string;
-  kp_id: string | null;
+  rate: string;
   id: number;
 }>();
 
 const state = reactive({
-  img: "",
-  rate: 0,
+  iframe: "",
 });
 
-onMounted(async () => {
-  const { data } = await kpApi.get<IKp>("movie", {
+const fetchInfo = async () => {
+  const { data } = await videoApi.get<IVideoCDN>("short", {
     params: {
-      search: props.kp_id,
-      field: "id",
+      kinopoisk_id: props.id,
     },
   });
 
-  state.rate = data.rating.kp;
-  state.img = data.poster.url;
+  state.iframe = data.data[0].iframe_src;
+};
+
+onMounted(() => {
+  fetchInfo();
 });
+
+const onClick = () => {
+  if (state.iframe) {
+    window.open(state.iframe);
+  }
+};
 </script>
 
 <template>
-  <div class="item" :key="props.id">
+  <div
+    class="item"
+    @click="onClick"
+    :class="{
+      'has-iframe': !!state.iframe,
+    }"
+  >
     <div class="item--img">
-      <img :src="state.img" alt="" v-if="state.img" />
+      <img :src="props.img" alt="" v-if="props.img" />
       <div class="no-img" v-else></div>
     </div>
     <div class="item--info">
       <div>
         <div class="title">{{ props.title }}</div>
         <div class="originalName">
-          <div class="originalName__rate" v-if="state.rate">
-            {{ state.rate.toFixed(1) }}
+          <div class="originalName__rate" v-if="props.rate">
+            {{ props.rate }}
           </div>
           <div class="originalName__text">{{ props.originalName }}</div>
         </div>
@@ -53,14 +71,16 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 @import "@/styles";
+
+.has-iframe {
+  cursor: pointer;
+}
 .item {
   display: flex;
 
   padding: 0 16px;
 
   transition: background 0.1s ease-out;
-
-  cursor: pointer;
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);

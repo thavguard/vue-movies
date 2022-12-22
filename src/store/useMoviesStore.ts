@@ -1,37 +1,81 @@
+import type { IKPFilms } from "./../types/kpTypes";
 import type { IVideoCDN } from "../types/types";
 import { kpApi, videoApi } from "../API/api";
 import type { IMovieCard } from "@/types/types";
 import { defineStore } from "pinia";
-import type { IKp } from "@/types/kpTypes";
 
 export const useMoviesStore = defineStore("movies", {
-  state: () =>
-    ({
-      movies: [],
-    } as IMoviesStote),
-  getters: {
-    getAllMovies: (state) => state.movies,
-  },
-  actions: {
-    async fetchMovies() {
-      const { data } = await videoApi.get<IVideoCDN>("short", {
-        params: {
-          title: "гарри поттер",
-        },
-      });
+  state: () => ({
+    recentFilms: [] as number[],
+    genres: [
+      {
+        id: 1,
+        genre: "триллер",
+      },
 
-      this.movies = data.data.map((item) => ({
-        year: item.year,
-        id: item.id,
-        iframe: item.iframe_src,
-        quality: item.quality,
-        rate: 7.2,
-        kp_id: item.kp_id,
-      }));
-    },
-  },
+      {
+        id: 3,
+        genre: "криминал",
+      },
+      {
+        id: 5,
+        genre: "детектив",
+      },
+      {
+        id: 6,
+        genre: "фантастика",
+      },
+      {
+        id: 7,
+        genre: "приключения",
+      },
+      {
+        id: 11,
+        genre: "боевик",
+      },
+      {
+        id: 12,
+        genre: "фэнтези",
+      },
+      {
+        id: 13,
+        genre: "комедия",
+      },
+      {
+        id: 14,
+        genre: "военный",
+      },
+      {
+        id: 17,
+        genre: "ужасы",
+      },
+      {
+        id: 18,
+        genre: "мультфильм",
+      },
+      {
+        id: 19,
+        genre: "семейный",
+      },
+      {
+        id: 2,
+        genre: "драма",
+      },
+      {
+        id: 22,
+        genre: "документальный",
+      },
+      {
+        id: 24,
+        genre: "аниме",
+      },
+    ] as MovieGenre[],
+  }),
+  getters: {},
+  actions: {},
 });
 
-interface IMoviesStote {
-  movies: IMovieCard[];
+interface MovieGenre {
+  id: number;
+  genre: string;
 }

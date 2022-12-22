@@ -8,8 +8,8 @@ export const videoApi = axios.create({
 });
 
 export const kpApi = axios.create({
-  baseURL: "https://api.kinopoisk.dev/",
-  params: {
-    token: import.meta.env.VITE_KP_TOKEN,
+  baseURL: "https://kinopoiskapiunofficial.tech/api/",
+  headers: {
+    "X-API-KEY": import.meta.env.VITE_KP_UN_TOKEN,
   },
 });

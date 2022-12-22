@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
+import Header from "@/components/common/Header/Header.vue";
 import { useMoviesStore } from "./store/useMoviesStore";
 const moviesStore = useMoviesStore();
 </script>
 
 <template>
   <div class="app">
-    <router-view></router-view>
+    <Header />
+    <div class="app_container">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -15,6 +19,7 @@ const moviesStore = useMoviesStore();
 @import url("https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&display=swap");
 
 *,
 ::after,
@@ -52,6 +57,10 @@ img {
 }
 
 .app {
-  margin: 0 60px;
+  // margin: 0 60px;
+
+  &_container {
+    // padding-top: 110px;
+  }
 }
 </style>

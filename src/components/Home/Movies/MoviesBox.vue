@@ -47,7 +47,9 @@ onMounted(() => {
 
     font-size: 24px;
     text-transform: uppercase;
-    font-family: "Anton", sans-serif;
+    font-family: "Unbounded", cursive;
+
+    color: #fdfdfd;
   }
 }
 </style>

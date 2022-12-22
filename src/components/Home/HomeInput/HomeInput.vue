@@ -47,7 +47,9 @@ const onSearch = () => {
           :key="item.id"
         />
       </div>
-      <div class="show-more" v-if="store.results.length > 4">Показать все</div>
+      <div class="show-more" v-if="store.results.length > 4" @click="onSearch">
+        Показать все
+      </div>
     </div>
   </div>
 </template>

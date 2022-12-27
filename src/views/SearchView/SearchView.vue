@@ -4,6 +4,10 @@ import SearchInput from "@/components/ui/SearchInput/SearchInput.vue";
 import { useSearchStore } from "@/store/useSearchStore";
 import kinoHdIcon from "@/assets/icons/kino_hd.webp";
 import Icon from "@/components/common/Icon/Icon.vue";
+import { useMediaQuery } from "@vueuse/core";
+
+const isMobile = useMediaQuery("(max-width: 600px)");
+
 const store = useSearchStore();
 
 const onClickSrc = (src: string) => {
@@ -46,9 +50,27 @@ const onClickSrc = (src: string) => {
               >
                 {{ item.translation }}
               </div>
+              <div class="info__btns" v-if="isMobile">
+                <div
+                  class="info__btns--btn"
+                  @click="
+                    onClickSrc(`https://www.kinopoisk.ru/film/${item.kp_id}/`)
+                  "
+                >
+                  <img :src="kinoHdIcon" alt="" />
+                </div>
+                <div
+                  class="info__btns--btn"
+                  @click="
+                    onClickSrc(`https://www.imdb.com/title/${item.imdb_id}/`)
+                  "
+                >
+                  <Icon :name="'imdb'" />
+                </div>
+              </div>
             </div>
           </div>
-          <div class="info__btns">
+          <div class="info__btns" v-if="!isMobile">
             <div
               class="info__btns--btn"
               @click="
@@ -208,20 +230,63 @@ const onClickSrc = (src: string) => {
       }
 
       .result {
-        // padding: 0;
+        padding: 8px 0;
 
         .info {
           margin-left: 12px;
           &__text {
             width: auto;
+            margin: 0;
+
+            .title {
+              font-size: 15px;
+
+              margin-bottom: 2px;
+            }
+
+            .origTitle {
+              font-size: 12px;
+
+              margin-bottom: 4px;
+            }
+
+            .more_info {
+              display: flex;
+              align-items: center;
+
+              .quality {
+                font-size: 12px;
+              }
+            }
+          }
+
+          &__btns {
+            display: flex;
+            align-items: center;
+
+            margin-left: 8px;
+
+            &--btn {
+              img,
+              &:deep(svg) {
+                width: 32px;
+                height: 32px;
+
+                display: flex;
+                align-items: center;
+              }
+
+              &:not(:last-of-type) {
+                margin-right: 4px;
+              }
+            }
           }
         }
 
         .img,
         img {
           width: 90px;
-
-          height: auto;
+          // height: auto;
         }
       }
     }

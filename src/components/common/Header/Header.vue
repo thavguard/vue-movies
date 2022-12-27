@@ -1,16 +1,27 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const onNavigate = (path: string) => {
+  router.push({
+    path: path,
+  });
+};
+</script>
 
 <template>
   <div class="header">
-    <div class="logo">FILMS</div>
+    <div class="logo" @click="onNavigate('/')">FILMS</div>
     <div class="btn">
-      <div class="btn_item">Main</div>
-      <div class="btn_item">Search</div>
+      <div class="btn_item" @click="onNavigate('/')">Main</div>
+      <div class="btn_item" @click="onNavigate('/search')">Search</div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/styles";
 .header {
   position: absolute;
   top: 0;
@@ -23,12 +34,14 @@
   justify-content: space-between;
   align-items: center;
 
-  padding: 30px 60px;
+  padding: 30px $pageMargin;
 
   .logo {
     font-size: 32px;
     font-weight: 700;
     font-family: "Unbounded", cursive;
+
+    cursor: pointer;
   }
 
   .btn {
@@ -48,6 +61,24 @@
       }
 
       &:hover {
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    // display: none;
+
+    padding: 20px $pageMarginMobile;
+
+    .logo {
+      font-size: 14px;
+    }
+
+    .btn {
+      &_item {
+        font-size: 14px;
       }
     }
   }

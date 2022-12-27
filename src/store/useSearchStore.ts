@@ -1,7 +1,6 @@
-import type { IVideoCDN } from "./../types/types";
-import { kpApi, videoApi } from "./../API/api";
+import { videoApi } from "./../API/api";
 import { defineStore } from "pinia";
-import type { SearchByKW } from "@/types/IByKeyWord";
+import type { VideoCDN } from "@/types/videoCND";
 export const useSearchStore = defineStore("search", {
   state: () => ({
     search: "",
@@ -10,21 +9,24 @@ export const useSearchStore = defineStore("search", {
   getters: {},
   actions: {
     async fetchResult() {
-      const { data } = await kpApi.get<SearchByKW>(
-        "v2.1/films/search-by-keyword",
-        {
-          params: {
-            keyword: this.search,
-          },
-        }
-      );
+      const { data } = await videoApi.get<VideoCDN>("short", {
+        params: {
+          title: this.search,
+        },
+      });
 
-      this.results = data.films.map((item) => ({
-        title: item.nameRu,
-        originalName: item.nameEn,
-        img: item.posterUrl,
-        rate: item.rating,
-        id: item.filmId,
+      this.results = data.data.map((item) => ({
+        id: Number(item.kp_id),
+        img: `http://www.kinopoisk.ru/images/film_big/${item.kp_id}.jpg`,
+        originalName: item.orig_title,
+        quality: item.quality,
+        title: item.title,
+        add: item.add,
+        seasonsCount: item.seasons_count,
+        iframe: item.iframe_src,
+        translation: item.translation,
+        kp_id: item.kp_id,
+        imdb_id: item.imdb_id,
       }));
     },
   },
@@ -34,6 +36,12 @@ interface ISearchResult {
   title: string;
   originalName: string;
   img: string;
-  rate: string;
   id: number;
+  quality: string;
+  add: Date;
+  seasonsCount: number;
+  iframe: string;
+  translation: string;
+  kp_id: string;
+  imdb_id: string;
 }

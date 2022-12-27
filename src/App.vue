@@ -55,12 +55,7 @@ img {
 
   object-fit: cover;
 }
-
 .app {
-  // margin: 0 60px;
-
-  &_container {
-    // padding-top: 110px;
-  }
+  max-width: 100%;
 }
 </style>

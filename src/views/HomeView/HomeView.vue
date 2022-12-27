@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import Icon from "@/components/common/Icon/Icon.vue";
-import HomeInput from "@/components/Home/HomeInput/HomeInput.vue";
+import SearchInput from "@/components/ui/SearchInput/SearchInput.vue";
 import Movies from "@/components/Home/Movies/Movies.vue";
 import { useMoviesStore } from "@/store/useMoviesStore";
-import type { IMovieCard } from "@/types/types";
 import HomeMovies from "@/views/HomeView/HomeMovies.vue";
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
+import SearchResults from "@/components/ui/SearchInput/SearchResults/SearchResults.vue";
 
 const store = useMoviesStore();
 
 const state = reactive({
-  recentFilms: [] as IMovieCard[],
+  recentFilms: [],
 });
 
-const randInt = Math.random().toFixed(1);
+const randInt = Math.floor(Math.random());
+
+onMounted(() => {
+  // store.fetchHomeMovies("TOP_100_POPULAR_FILMS");
+});
 </script>
 
 <template>
@@ -26,11 +30,12 @@ const randInt = Math.random().toFixed(1);
         'bg-2': +randInt > 0.6 && +randInt <= 1,
       }"
     >
-      <div class="cards">
-        <Movies :movies="store.recentFilms" />
-      </div>
+      <!-- <div class="cards">
+        <Movies :movies="store.homeMovies" />
+      </div> -->
       <div class="input">
-        <HomeInput />
+        <SearchInput />
+        <SearchResults />
       </div>
     </div>
     <div class="movies">
@@ -61,33 +66,24 @@ const randInt = Math.random().toFixed(1);
 
   padding-top: $paddintTop;
 
-  margin-bottom: 60px;
-
   .cards {
-    margin-bottom: 107px;
+    margin-bottom: 100px;
   }
   .input {
     max-width: 870px;
     width: 100%;
 
-    margin: 0 auto;
+    margin: 200px auto 0;
   }
 }
 
-@keyframes arrowDown {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
+@media (max-width: 600px) {
+  .home {
+    padding: 57px $pageMarginMobile 0 $pageMarginMobile;
 
-  50% {
-    transform: translateY(2px);
-    opacity: 0.5;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
+    .input {
+      margin-top: 50px;
+    }
   }
 }
 </style>

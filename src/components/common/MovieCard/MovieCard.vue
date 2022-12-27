@@ -2,10 +2,8 @@
 import Icon from "../Icon/Icon.vue";
 import kinoHdIcon from "@/assets/icons/kino_hd.webp";
 import { onMounted } from "vue";
-import { kpApi, videoApi } from "@/API/api";
+import { videoApi } from "@/API/api";
 import { reactive } from "vue";
-import type { Genre } from "@/types/kpTypes";
-import type { IVideoCDN } from "@/types/types";
 import { useMoviesStore } from "@/store/useMoviesStore";
 
 const props = defineProps<{
@@ -15,7 +13,7 @@ const props = defineProps<{
   posterUrl: string;
   nameRu: string;
   nameEn: string;
-  genres: Genre[];
+  genres: { genre: string }[];
   ratingImdb: number;
   imdbId: string;
 }>();
@@ -32,11 +30,11 @@ const onClick = () => {
     window.open(state.iframe);
   }
 
-  store.recentFilms.push(props.kinopoiskId);
+  // store.recentFilms.push(props.kinopoiskId);
 };
 
 const fetchInfo = async () => {
-  const { data } = await videoApi.get<IVideoCDN>("short", {
+  const { data } = await videoApi.get("short", {
     params: {
       kinopoisk_id: props.kinopoiskId,
     },
@@ -109,8 +107,6 @@ onMounted(() => {
   position: relative;
   max-width: $cardWidth;
   width: 100%;
-
-  margin: 0 60px;
 
   transition: transform 0.25s ease-in-out;
 

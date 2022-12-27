@@ -2,8 +2,8 @@
 import { reactive } from "vue";
 import search from "@/assets/icons/search.svg";
 import { useSearchStore } from "@/store/useSearchStore";
-import MovieCardResult from "../MovieCardResult/MovieCardResult.vue";
 import { useRoute, useRouter } from "vue-router";
+import SearchResults from "./SearchResults/SearchResults.vue";
 
 const store = useSearchStore();
 const router = useRouter();
@@ -12,6 +12,8 @@ const route = useRoute();
 const onInput = () => {
   if (store.search) {
     store.fetchResult();
+  } else {
+    store.results = [];
   }
 };
 
@@ -22,13 +24,11 @@ const onSearch = () => {
       text: store.search,
     },
   });
-
-  console.log("hey hey hey");
 };
 </script>
 
 <template>
-  <div class="container">
+  <div class="input_container">
     <div class="home-input" @input="onInput">
       <input
         type="text"
@@ -37,18 +37,6 @@ const onSearch = () => {
       />
       <div class="search" @click="onSearch">
         <img :src="search" alt="" />
-      </div>
-    </div>
-    <div class="results" v-if="store.results.length">
-      <div class="items">
-        <MovieCardResult
-          v-for="item in store.results.slice(0, 4)"
-          :="item"
-          :key="item.id"
-        />
-      </div>
-      <div class="show-more" v-if="store.results.length > 4" @click="onSearch">
-        Показать все
       </div>
     </div>
   </div>
@@ -103,31 +91,6 @@ const onSearch = () => {
 
     cursor: pointer;
     user-select: none;
-  }
-}
-
-.results {
-  background: $homeInputBg;
-  border-radius: 8px;
-
-  margin-top: 4px;
-
-  color: #0e0d0d;
-
-  .items {
-    padding: 16px 0;
-  }
-
-  .show-more {
-    background: #dadada;
-    border-radius: 0 0 8px 8px;
-
-    padding: 8px 16px;
-
-    color: #080808;
-    font-size: 14px;
-
-    cursor: pointer;
   }
 }
 </style>

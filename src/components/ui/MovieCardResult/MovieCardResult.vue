@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { kpApi, videoApi } from "@/API/api";
-import type { IVideoCDN } from "@/types/types";
+import { videoApi } from "@/API/api";
 import {
   onMounted,
   reactive,
@@ -14,31 +13,14 @@ const props = defineProps<{
   title: string;
   originalName: string;
   img: string;
-  rate: string;
   id: number;
+  iframe: string;
+  quality: string;
 }>();
 
-const state = reactive({
-  iframe: "",
-});
-
-const fetchInfo = async () => {
-  const { data } = await videoApi.get<IVideoCDN>("short", {
-    params: {
-      kinopoisk_id: props.id,
-    },
-  });
-
-  state.iframe = data.data[0].iframe_src;
-};
-
-onMounted(() => {
-  fetchInfo();
-});
-
 const onClick = () => {
-  if (state.iframe) {
-    window.open(state.iframe);
+  if (props.iframe) {
+    window.open(props.iframe);
   }
 };
 </script>
@@ -48,7 +30,7 @@ const onClick = () => {
     class="item"
     @click="onClick"
     :class="{
-      'has-iframe': !!state.iframe,
+      'has-iframe': !!props.iframe,
     }"
   >
     <div class="item--img">
@@ -59,8 +41,8 @@ const onClick = () => {
       <div>
         <div class="title">{{ props.title }}</div>
         <div class="originalName">
-          <div class="originalName__rate" v-if="props.rate">
-            {{ props.rate }}
+          <div class="originalName__quality" v-if="props.quality">
+            {{ props.quality }}
           </div>
           <div class="originalName__text">{{ props.originalName }}</div>
         </div>
@@ -71,6 +53,9 @@ const onClick = () => {
 
 <style scoped lang="scss">
 @import "@/styles";
+
+$cardWidth: 60px;
+$cardHeight: 90px;
 
 .has-iframe {
   cursor: pointer;
@@ -92,17 +77,20 @@ const onClick = () => {
 
   &--img {
     margin-right: 16px;
-    width: 60px;
+    width: $cardWidth;
+    height: $cardHeight;
+    background: $cardSkeletonBg;
 
     img {
-      width: 60px;
+      width: $cardWidth;
+      height: $cardHeight;
     }
   }
 
   .no-img {
     background: $cardSkeletonBg;
     height: 90px;
-    width: 60px;
+    width: $cardWidth;
   }
 
   &--info {
@@ -120,7 +108,7 @@ const onClick = () => {
       display: flex;
       align-items: center;
 
-      &__rate {
+      &__quality {
         margin-right: 6px;
 
         font-size: 18px;
@@ -132,6 +120,29 @@ const onClick = () => {
         font-size: 15px;
         color: #484848;
         font-family: "Work Sans", sans-serif;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .item {
+    padding: 0 8px;
+
+    &--info {
+      .title {
+        font-size: 15px;
+
+        margin-bottom: 2px;
+      }
+
+      .originalName {
+        &__quality {
+          font-size: 12px;
+        }
+        &__text {
+          font-size: 12px;
+        }
       }
     }
   }
